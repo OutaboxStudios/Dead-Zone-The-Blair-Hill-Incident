@@ -21,3 +21,67 @@ The Blair Mountains: Blair Peak, The Lookout, The Summit, Tanya’s Extreme Endu
 The Sunken Tunnels: Security Base Echo, Tunnel Entrance East, Security Base Foxtrot, Tunnel Entrance South, Tunnel Hall, Underground Security Platform Alpha, Fork One, Fork Two, Fork Three, Tunnel Maze, Underground Security Platform Bravo, Mineral Extraction Point A, Underground Security Platform Charlie, Mineral Extraction Point B, Mineral Extraction Point C, Fork Four, Underground Security Platform Echo, Tunnel One Exit, Security Base Golf, Tunnel Two Exit, Security Base Hotel, Tunnel Exit Three and The Collection Pit.
 
 The Scaled Islands: Marnabak’s Island, Marnabak’s Bakery, Marnabak’s Hut, Marnabak’s Stash, Marnabak’s Peer and Marnabak’s Cult. The High Bridge, Water Tower One, Scaled Island Two, The Writer’s Manor, The Green House and Warthog’s Pit. The Low Bridge, Water Tower Two, Scaled Island Three, Old Cottage and Allister’s Gun Range. The Scattered Bridge, Water Tower Three, Scaled Island Four, Marnabak’s Family Grave Site, Ruined Church, Ella’s Farm and Ella’s Tree House Lodge. The Haunted Bridge, The Hydro Conversion Tower, The Scarred Island, Old Ruins, Dark Forest, Haunted Cove, Splinter Village, Anna’s Hall, The Sunken Bridge, The Nowhere Island, Secret Facility and Test Site.
+
+ Character Movement Source Code: Lana_Slade:The Blair Hill Incident-Chapter 5 (First_switch_from_third_person_to_first_person_view)
+ Scene opening: Player enters Grayson Manor as Lana_Slade
+ (Character_Pinned_in_mansion_on_the_hill)
+ // Handles input for moving forward and backward.
+UFUNCTION()
+void MoveForward(float Value);
+
+// Handles input for moving right and left.
+UFUNCTION()
+void MoveRight(float Value);#pragma once
+
+#include "GameFramework/Character.h"
+#include "FPSCharacter.generated.h"
+
+UCLASS()
+class FPSPROJECT_API AFPSCharacter : public ACharacter
+{
+    GENERATED_BODY()
+
+public:
+    // Sets default values for this character's properties
+    AFPSCharacter();
+
+protected:
+    // Called when the game starts or when spawned
+    virtual void BeginPlay() override;
+
+public:
+    // Called every frame
+    virtual void Tick( float DeltaSeconds ) override;
+
+    // Called to bind functionality to input
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    // Handles input for moving forward and backward.
+    UFUNCTION()
+    void MoveForward(float Value);
+
+    // Handles input for moving right and left.
+    UFUNCTION()
+    void MoveRight(float Value);
+
+};// Called to bind functionality to input
+void AFPSCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+{
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    // Set up "movement" bindings.
+    PlayerInputComponent->BindAxis("MoveForward", this, &AFPSCharacter::MoveForward);
+    PlayerInputComponent->BindAxis("MoveRight", this, &AFPSCharacter::MoveRight);
+}void AFPSCharacter::MoveForward(float Value)
+{
+    // Find out which way is "forward" and record that the player wants to move that way.
+    FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+    AddMovementInput(Direction, Value);
+}void AFPSCharacter::MoveRight(float Value)
+{
+    // Find out which way is "right" and record that the player wants to move that way.
+    FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+    AddMovementInput(Direction, Value);
+}
+
+Note...The above source code will be modified.
